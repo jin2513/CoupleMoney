@@ -17,10 +17,6 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-//@Configuration
-//@ComponentScan(basePackages = "test.mvc.spring", includeFilters = @Filter({ Controller.class,
-//		Service.class }), useDefaultFilters = false)
-//public class WebMvcConfig extends WebMvcConfigurationSupport {
 @Configuration
 @EnableWebMvc
 @ComponentScan("test.mvc.spring")
