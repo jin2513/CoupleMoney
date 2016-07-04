@@ -31,8 +31,6 @@ public class SocialServiceImpl implements SocialService {
 		String redirectUri = request.getRequestURL().toString().replaceAll(request.getRequestURI(), "") + request.getContextPath();
 		String state = sns.generateStateToken(socialType);
 		
-		logger.info("state : " + state);
-		
 		return sns.createOAuthAuthorizationURL(request, redirectUri, state);
 	}
 	
@@ -48,13 +46,11 @@ public class SocialServiceImpl implements SocialService {
 	
 	@Override
 	public String getUserInfoByOauth2x(HttpServletRequest request, String socialType, String code, String state) {
-		logger.info("socialType : " + socialType + " / code : " + code + " / state : " + state);
 		// 1. 팩토리 생성
 		AbstractSocialNetworkService sns = socialNetworkServiceFactory.create(socialType);
 		
 		// 2. 세션에 담긴 state 값 조회
 		String storedState = SessionHandler.getStringInfo(request, SessionHandler.STATE);
-		logger.info("state : " + storedState);
 		
 		// 2.1. state 값 인증
 		if(!state.equals("") && !state.equals(storedState)) {

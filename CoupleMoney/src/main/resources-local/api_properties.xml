@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>Daum Authorization Key</comment>
+	<comment>Api Authorization Key</comment>
+	<entry key="daum.host">https://apis.daum.net</entry>
 	<entry key="daum.client.id">5710146924007080108</entry>
 	<entry key="daum.client.secret">95de935ac3accea52d0295de9eab5fa8</entry>
-	<entry key="daum.client.callback">/social/daum/callback</entry>
+	<entry key="daum.client.callback">/social/daum/oauth2.0/callback</entry>
 </properties>

@@ -17,10 +17,21 @@ import test.mvc.spring.common.handler.SessionHandler;
 public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 	private static final Logger logger = LoggerFactory.getLogger(SocialNetworkServiceDaum.class);
 	
-	private static final String DAUM_HOST = "https://apis.daum.net";
-	private static final String DAUM_CLIENT_KEY = "5710146924007080108";
-	private static final String DAUM_CLIENT_SECRET = "95de935ac3accea52d0295de9eab5fa8";
-	private static final String DAUM_CLIENT_CALLBACK = "/social/daum/oauth2.0/callback";
+	private String DAUM_HOST;
+	private String DAUM_CLIENT_KEY;
+	private String DAUM_CLIENT_SECRET;
+	private String DAUM_CLIENT_CALLBACK;
+	
+	public SocialNetworkServiceDaum(String DAUM_HOST, String DAUM_CLIENT_KEY, String DAUM_CLIENT_SECRET, String DAUM_CLIENT_CALLBACK) {
+		this.DAUM_HOST = DAUM_HOST;
+		this.DAUM_CLIENT_KEY = DAUM_CLIENT_KEY;
+		this.DAUM_CLIENT_SECRET = DAUM_CLIENT_SECRET;
+		this.DAUM_CLIENT_CALLBACK = DAUM_CLIENT_CALLBACK;
+		logger.info("DAUM_HOST : " + DAUM_HOST);
+		logger.info("DAUM_CLIENT_KEY : " + DAUM_CLIENT_KEY);
+		logger.info("DAUM_CLIENT_SECRET : " + DAUM_CLIENT_SECRET);
+		logger.info("DAUM_CLIENT_CALLBACK : " + DAUM_CLIENT_CALLBACK);
+	}
 	
 	public String createOAuthAuthorizationURL(HttpServletRequest request, String redirectUri, String state) {
 		SessionHandler.setStringInfo(request, SessionHandler.STATE, state);
@@ -49,13 +60,16 @@ public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 	
 	@Override
 	public Map<String, Object> user(String accessToken, String oauth_token, String oauth_verifier, HttpServletRequest servletRequest) {
+		logger.info("accessToken : " + accessToken);
+		logger.info("oauth_token : " + oauth_token);
+		logger.info("oauth_verifier : " + oauth_verifier);
+		
 		// 1. url 정보
 		String url = DAUM_HOST + "/user/v1/show.json";
 		
 		// 2. 바디 정보
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("access_token", accessToken);
-		params.put("output", "json");
 		
 		try {
 			// 3. json 형태의 결과값

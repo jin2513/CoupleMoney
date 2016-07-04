@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,8 +25,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -95,31 +94,21 @@ public abstract class AbstractSocialNetworkService {
 	 * @return
 	 */
 	protected String httpGet(String url, Map<String, String> headers, Map<String, String> params) {
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpGet get = new HttpGet(url);
+		int index = 0;
+		StringBuffer temp = new StringBuffer();
 		
-		// 1. 헤더 설정
-		if(headers != null) {
-			Iterator<String> it = headers.keySet().iterator();
-			while(it.hasNext()){
-				String key = it.next();
-				String val = headers.get(key);
-				get.addHeader(key, val);
+		for(Entry<String, String> entry : params.entrySet()) {
+			if(index == 0) {
+				temp.append("?" + entry.getKey() + "=" + entry.getValue());
+			} else {
+				temp.append("&" + entry.getKey() + "=" + entry.getValue());
 			}
-		}
-		
-		// 2. 파라미터값 설정
-		if(params != null) {
-			HttpParams httpParams = new BasicHttpParams();
 			
-			Iterator<String> itParam = params.keySet().iterator();
-			while(itParam.hasNext()){
-				String key = itParam.next();
-				String val = params.get(key);
-				
-				httpParams.setParameter(key, val);
-			}
+			index++;
 		}
+		
+		HttpClient httpclient = HttpClientBuilder.create().build();
+		HttpGet get = new HttpGet(url + temp.toString());
 		
 		StringBuffer result = new StringBuffer();
 		
