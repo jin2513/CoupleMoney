@@ -35,7 +35,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
 		for (String resource : RESOURCES) {
 			String resourceHandler = "/" + resource + "/";
 			String resourceLocations = resourceHandler + "**";
-			registry.addResourceHandler(resourceHandler).addResourceLocations(resourceLocations).setCachePeriod(31556926);
+			registry.addResourceHandler(resourceHandler).addResourceLocations(resourceLocations).setCachePeriod(0);
 		}
 	}
 	
