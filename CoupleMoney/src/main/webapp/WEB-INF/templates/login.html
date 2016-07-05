@@ -16,10 +16,18 @@
 			<h1>Welcome</h1>
 			
 			<form class="form">
+				<img th:src="@{/resources/images/bt_icon.png}" onClick="getAuthorizationUrl('daum')" alt="daum login"/>
 				<input type="text" placeholder="Username">
 				<input type="password" placeholder="Password">
 				<button type="submit" id="login-button">Login</button>
-				<img th:src="@{/resources/images/bt_icon.png}" />
+				
+<!-- 				<button type="button" class="btn btn-lg btn-default" >DAUM</button> -->
+<!-- 				<button type="button" class="btn btn-lg btn-primary" onClick="getAuthorizationUrl('kakao')">KAKAO</button> -->
+<!-- 				<button type="button" class="btn btn-lg btn-success" onClick="getAuthorizationUrl('naver')">NAVER</button> -->
+<!-- 				<button type="button" class="btn btn-lg btn-info" onClick="getAuthorizationUrl('google')">GOOGLE</button> -->
+<!-- 				<button type="button" class="btn btn-lg btn-warning" onClick="getAuthorizationUrl('twitter')">TWITTER</button> -->
+<!-- 				<button type="button" class="btn btn-lg btn-danger">Danger</button> -->
+<!-- 				<button type="button" class="btn btn-lg btn-link">Link</button> -->
 			</form>
 		</div>
 		
@@ -37,14 +45,29 @@
 		</ul>
 	</div>
 	<script src="//assets.codepen.io/assets/common/stopExecutionOnTimeout.js?t=1"></script>
-	<script>
-		$(document).ready(function() {
-			$("#login-button").click(function(event) {
-				event.preventDefault();
-				$('form').fadeOut(500);
-				$('.wrapper').addClass('form-success');
-			});
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#login-button").click(function(event) {
+			event.preventDefault();
+			$('form').fadeOut(500);
+			$('.wrapper').addClass('form-success');
 		});
+	});
+		
+	function getAuthorizationUrl(socialType) {
+		$.ajax({
+			url: "/social/oauth/" + socialType,
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				window.location.href = result.url;
+			}, fail: function(result) {
+				console.log(result);
+			}
+		});
+	}
+	</script>
+		
 	</script>
 </body>
 </html>
