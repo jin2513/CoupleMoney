@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import test.mvc.spring.common.handler.SessionHandler;
+import test.mvc.spring.vo.UserVo;
 
 public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 	private static final Logger logger = LoggerFactory.getLogger(SocialNetworkServiceDaum.class);
@@ -59,7 +60,7 @@ public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 	}
 	
 	@Override
-	public Map<String, Object> user(String accessToken, String oauth_token, String oauth_verifier, HttpServletRequest servletRequest) {
+	public UserVo user(String accessToken, String oauth_token, String oauth_verifier, HttpServletRequest servletRequest) {
 		logger.info("accessToken : " + accessToken);
 		logger.info("oauth_token : " + oauth_token);
 		logger.info("oauth_verifier : " + oauth_verifier);
@@ -92,14 +93,16 @@ public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 			JSONObject resultJsonObject = (JSONObject) jsonObject.get("result");
 			
 			// 8. 사용자 정보 map에 저장
-			Map<String, Object> userData = new HashMap<String, Object>();
-			userData.put("userid", (String)resultJsonObject.get("userid")); 
-			userData.put("id", (long)resultJsonObject.get("id"));
-			userData.put("nickname", (String)resultJsonObject.get("nickname"));
-			userData.put("imagepath", (String)resultJsonObject.get("imagepath"));
-			userData.put("bigImagePath", (String)resultJsonObject.get("bigImagePath"));
-			
-			return userData;
+			UserVo user = new UserVo();
+//			userData.put("userid", (String)resultJsonObject.get("userid")); 
+//			userData.put("id", (long)resultJsonObject.get("id"));
+//			userData.put("nickname", (String)resultJsonObject.get("nickname"));
+//			userData.put("imagepath", (String)resultJsonObject.get("imagepath"));
+//			userData.put("bigImagePath", (String)resultJsonObject.get("bigImagePath"));
+			user.setId(String.valueOf((long)resultJsonObject.get("id")));
+			user.setName((String)resultJsonObject.get("nickname"));
+			user.setProfileImage((String)resultJsonObject.get("imagepath"));
+			return user;
 		} catch (ParseException e) {
 			throw new Error(e.getMessage());
 		}

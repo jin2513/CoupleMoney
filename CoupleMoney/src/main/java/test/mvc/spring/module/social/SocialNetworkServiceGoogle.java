@@ -3,7 +3,6 @@ package test.mvc.spring.module.social;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +26,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
 import test.mvc.spring.common.handler.SessionHandler;
+import test.mvc.spring.vo.UserVo;
 
 public class SocialNetworkServiceGoogle extends AbstractSocialNetworkService {
 	private static final Logger logger = LoggerFactory.getLogger(SocialNetworkServiceGoogle.class);
@@ -78,7 +78,7 @@ public class SocialNetworkServiceGoogle extends AbstractSocialNetworkService {
 	}
 	
 	@Override
-	public Map<String, Object> user(String authCode, String notUsed, String notUsed2, HttpServletRequest servletRequest) {
+	public UserVo user(String authCode, String notUsed, String notUsed2, HttpServletRequest servletRequest) {
 		String callbackUrl = servletRequest.getRequestURL().toString().replaceAll(servletRequest.getRequestURI(), "") + servletRequest.getContextPath() + CALLBACK_URL;
 		
 		try {
@@ -100,13 +100,16 @@ public class SocialNetworkServiceGoogle extends AbstractSocialNetworkService {
 			JSONObject jsonObject = (JSONObject)jsonParser.parse(jsonIdentity);
 			
 			// 8. 사용자 정보 map에 저장
-			Map<String, Object> userData = new HashMap<String, Object>();
-			userData.put("id", (String)jsonObject.get("id"));
-			userData.put("email", (String)jsonObject.get("email")); 
-			userData.put("name", (String)jsonObject.get("name"));
-			userData.put("picture", (String)jsonObject.get("picture"));
-			
-			return userData;
+//			Map<String, Object> userData = new HashMap<String, Object>();
+//			userData.put("id", (String)jsonObject.get("id"));
+//			userData.put("email", (String)jsonObject.get("email")); 
+//			userData.put("name", (String)jsonObject.get("name"));
+//			userData.put("picture", (String)jsonObject.get("picture"));
+			UserVo user = new UserVo();
+			user.setId((String)jsonObject.get("id"));
+			user.setName((String)jsonObject.get("name"));
+			user.setProfileImage((String)jsonObject.get("picture"));
+			return user;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

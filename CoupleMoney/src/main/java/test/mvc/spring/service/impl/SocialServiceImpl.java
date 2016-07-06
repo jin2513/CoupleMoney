@@ -14,6 +14,7 @@ import test.mvc.spring.common.handler.SessionHandler;
 import test.mvc.spring.module.social.AbstractSocialNetworkService;
 import test.mvc.spring.module.social.FactorySocialNetworkService;
 import test.mvc.spring.service.SocialService;
+import test.mvc.spring.vo.UserVo;
 
 @Service
 public class SocialServiceImpl implements SocialService {
@@ -39,9 +40,10 @@ public class SocialServiceImpl implements SocialService {
 		// 1. 팩토리 생성
 		AbstractSocialNetworkService sns = socialNetworkServiceFactory.create(socialType);
 		
-		Map<String, Object> userInfo = sns.user(null, oauth_token, oauth_verifier, request);
+		UserVo userVo = sns.user(null, oauth_token, oauth_verifier, request);
+		SessionHandler.setObjectInfo(request, CommonCode.SessionType.USER.code, userVo);
 		
-		return "redirect:/login";
+		return "redirect:/";
 	}
 	
 	@Override
@@ -59,7 +61,7 @@ public class SocialServiceImpl implements SocialService {
 			SessionHandler.removeSessionInfo(request, SessionHandler.STATE);
 		}
 		
-		Map<String, Object> userInfo = null;
+		UserVo userVo = null;
 		
 		if(!socialType.equals(CommonCode.SocialType.GOOGLE.code)) {
 			// 3. token 획득
@@ -67,14 +69,15 @@ public class SocialServiceImpl implements SocialService {
 			String accessToken = (String) token.get("access_token");
 			
 			// 4. 사용자 정보
-			userInfo = sns.user(accessToken, null, null, null);
+			userVo = sns.user(accessToken, null, null, null);
 		} else {
-			userInfo = sns.user(code, null, null, request);
+			userVo = sns.user(code, null, null, request);
 		}
 		
+		SessionHandler.setObjectInfo(request, CommonCode.SessionType.USER.code, userVo);
 		
-		logger.info(userInfo.toString());
+		logger.info(userVo.toString());
 		
-		return "redirect:/login";
+		return "redirect:/";
 	}
 }

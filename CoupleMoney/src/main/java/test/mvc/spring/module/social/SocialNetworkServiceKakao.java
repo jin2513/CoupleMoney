@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import test.mvc.spring.common.handler.SessionHandler;
+import test.mvc.spring.vo.UserVo;
 
 public class SocialNetworkServiceKakao extends AbstractSocialNetworkService {
 	private static final Logger logger = LoggerFactory.getLogger(SocialNetworkServiceKakao.class);
@@ -47,7 +48,7 @@ public class SocialNetworkServiceKakao extends AbstractSocialNetworkService {
 	}
 	
 	@Override
-	public Map<String, Object> user(String accessToken, String notUsed, String notUsed2, HttpServletRequest servletRequest) {
+	public UserVo user(String accessToken, String notUsed, String notUsed2, HttpServletRequest servletRequest) {
 		// 1. 요청 url
 		String url = KAKAO_API_HOST + "/v1/user/me";
 		
@@ -72,11 +73,14 @@ public class SocialNetworkServiceKakao extends AbstractSocialNetworkService {
 			userData.put("id", (long)jsonObject.get("id"));
 			
 			JSONObject propertiesJsonObject = (JSONObject) jsonObject.get("properties");
-			userData.put("nickname", (String)propertiesJsonObject.get("nickname"));
-			userData.put("thumbnail_image", (String)propertiesJsonObject.get("thumbnail_image"));
-			userData.put("profile_image", (String)propertiesJsonObject.get("profile_image"));
-			
-			return userData;
+//			userData.put("nickname", (String)propertiesJsonObject.get("nickname"));
+//			userData.put("thumbnail_image", (String)propertiesJsonObject.get("thumbnail_image"));
+//			userData.put("profile_image", (String)propertiesJsonObject.get("profile_image"));
+			UserVo user = new UserVo();
+			user.setId(String.valueOf((long)jsonObject.get("id")));
+			user.setName((String)propertiesJsonObject.get("nickname"));
+			user.setProfileImage((String)propertiesJsonObject.get("profile_image"));
+			return user;
 		} catch (ParseException e) {
 			throw new Error(e.getMessage());
 		}

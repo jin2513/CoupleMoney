@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import test.mvc.spring.common.handler.SessionHandler;
+import test.mvc.spring.vo.UserVo;
 
 public class SocialNetworkServiceNaver extends AbstractSocialNetworkService {
 	private static final Logger logger = LoggerFactory.getLogger(SocialNetworkServiceNaver.class);
@@ -48,7 +49,7 @@ public class SocialNetworkServiceNaver extends AbstractSocialNetworkService {
 	}
 	
 	@Override
-	public Map<String, Object> user(String accessToken, String notUsed, String notUsed2, HttpServletRequest servletRequest) {
+	public UserVo user(String accessToken, String notUsed, String notUsed2, HttpServletRequest servletRequest) {
 		logger.info(accessToken);
 		// 1. url 정보 
 		String url = NAVER_API_HOST + "/v1/nid/me";
@@ -75,11 +76,15 @@ public class SocialNetworkServiceNaver extends AbstractSocialNetworkService {
 			}
 			
 			// 8. 사용자 정보 map에 저장
-			Map<String, Object> userData = new HashMap<String, Object>();
-			userData.put("userid", (String)propertiesJsonObject.get("nickname")); 
-			userData.put("id", (long)propertiesJsonObject.get("thumbnail_image"));
-			userData.put("nickname", (String)propertiesJsonObject.get("profile_image"));
-			return userData;
+//			Map<String, Object> userData = new HashMap<String, Object>();
+//			userData.put("userid", (String)propertiesJsonObject.get("nickname")); 
+//			userData.put("id", (long)propertiesJsonObject.get("thumbnail_image"));
+//			userData.put("nickname", (String)propertiesJsonObject.get("profile_image"));
+			UserVo user = new UserVo();
+			user.setId(String.valueOf((long)jsonObject.get("id")));
+			user.setName((String)propertiesJsonObject.get("nickname"));
+			user.setProfileImage((String)propertiesJsonObject.get("profile_image"));
+			return user;
 		} catch (ParseException e) {
 			throw new Error(e.getMessage());
 		}

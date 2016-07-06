@@ -1,6 +1,5 @@
 package test.mvc.spring.module.social;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import test.mvc.spring.common.handler.SessionHandler;
+import test.mvc.spring.vo.UserVo;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -82,7 +82,7 @@ public class SocialNetworkServiceTwitter extends AbstractSocialNetworkService {
 	}
 	
 	@Override
-	public Map<String, Object> user(String notUsed, String oauth_token, String oauth_verifier, HttpServletRequest request) {
+	public UserVo user(String notUsed, String oauth_token, String oauth_verifier, HttpServletRequest request) {
 		this.requestToken = (RequestToken)SessionHandler.getObjectInfo(request, REQUEST_TOKEN);
 		
 		if(requestToken == null) {
@@ -98,16 +98,20 @@ public class SocialNetworkServiceTwitter extends AbstractSocialNetworkService {
 		
 		try {
 			AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, oauth_verifier);
-			User user = twitter.showUser(accessToken.getUserId());
+			User showUser = twitter.showUser(accessToken.getUserId());
 			
-			logger.info(user.toString());
+			logger.info(showUser.toString());
 			
-			Map<String, Object> userData = new HashMap<String, Object>();
-			userData.put("userid", String.valueOf(user.getId()));
-			userData.put("name", user.getName());
-			userData.put("profileImageUrl", user.getProfileImageURL());
+//			Map<String, Object> userData = new HashMap<String, Object>();
+//			userData.put("userid", String.valueOf(user.getId()));
+//			userData.put("name", user.getName());
+//			userData.put("profileImageUrl", user.getProfileImageURL());
 			
-			return userData;
+			UserVo user = new UserVo();
+			user.setId(String.valueOf(showUser.getId()));
+			user.setName(showUser.getName());
+			user.setProfileImage(showUser.getProfileImageURL());
+			return user;
 		} catch (TwitterException e) {
 			throw new Error("ErrorCode: " + e.getErrorCode() + ", message: " + e.getErrorMessage() + "]");
 		}

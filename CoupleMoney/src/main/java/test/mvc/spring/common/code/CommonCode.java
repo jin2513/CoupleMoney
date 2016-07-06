@@ -1,7 +1,6 @@
 package test.mvc.spring.common.code;
 
 public class CommonCode {
-	/*******************************************************************************************************/
 	public enum SocialType {
 
 		DAUM("daum")
@@ -13,6 +12,16 @@ public class CommonCode {
 		public String code;
 		
 		SocialType(String code) {
+			this.code = code;
+		}
+	}
+	
+	public enum SessionType {
+		USER("user");
+		
+		public String code;
+		
+		SessionType(String code) {
 			this.code = code;
 		}
 	}

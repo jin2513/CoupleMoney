@@ -256,6 +256,12 @@
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>3.0.0.RELEASE</version>
 		</dependency>
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.14.8</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

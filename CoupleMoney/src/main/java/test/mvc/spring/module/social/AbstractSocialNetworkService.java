@@ -32,6 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import test.mvc.spring.vo.UserVo;
+
 @SuppressWarnings("deprecation")
 public abstract class AbstractSocialNetworkService {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSocialNetworkService.class);
@@ -76,7 +78,7 @@ public abstract class AbstractSocialNetworkService {
 	 * @param accessToken
 	 * @return
 	 */
-	public abstract Map<String, Object> user(String accessToken, String oauth_token, String oauth_verifier, HttpServletRequest servletRequest);
+	public abstract UserVo user(String accessToken, String oauth_token, String oauth_verifier, HttpServletRequest servletRequest);
 	
 	/**
 	 * Generates a secure state token
