@@ -97,11 +97,11 @@ public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 //			userData.put("userid", (String)resultJsonObject.get("userid")); 
 //			userData.put("id", (long)resultJsonObject.get("id"));
 //			userData.put("nickname", (String)resultJsonObject.get("nickname"));
-//			userData.put("imagepath", (String)resultJsonObject.get("imagepath"));
+//			userData.put("imagepath", (String)resultJsonObject.get("imagePath"));
 //			userData.put("bigImagePath", (String)resultJsonObject.get("bigImagePath"));
 			user.setId(String.valueOf((long)resultJsonObject.get("id")));
 			user.setName((String)resultJsonObject.get("nickname"));
-			user.setProfileImage((String)resultJsonObject.get("imagepath"));
+			user.setProfileImage((String)resultJsonObject.get("imagePath"));
 			return user;
 		} catch (ParseException e) {
 			throw new Error(e.getMessage());
