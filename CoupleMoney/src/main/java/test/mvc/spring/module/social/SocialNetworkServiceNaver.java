@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import test.mvc.spring.common.code.CommonCode;
 import test.mvc.spring.common.handler.SessionHandler;
 import test.mvc.spring.vo.UserVo;
 
@@ -24,7 +25,7 @@ public class SocialNetworkServiceNaver extends AbstractSocialNetworkService {
 	private static final String NAVER_CLIENT_CALLBACK = "/social/naver/oauth2.0/callback";
 	
 	public String createOAuthAuthorizationURL(HttpServletRequest request, String redirectUri, String state) {
-		SessionHandler.setStringInfo(request, SessionHandler.STATE, state);
+		SessionHandler.setStringInfo(request, CommonCode.SessionType.STATE.code, state);
 		return NAVER_AUTH_HOST + "/oauth2.0/authorize?client_id=" + NAVER_CLIENT_KEY + "&response_type=code&redirect_uri=" + redirectUri + NAVER_CLIENT_CALLBACK +"&state=" + state;
 	}
 	
@@ -67,23 +68,26 @@ public class SocialNetworkServiceNaver extends AbstractSocialNetworkService {
 			JSONParser jsonParser = new JSONParser();
 			
 			// 6. string 형태의 json 값 parsing
-			JSONObject jsonObject = (JSONObject)jsonParser.parse(result.toString());
+			JSONObject resultJsonObject = (JSONObject)jsonParser.parse(result.toString());
 			
-			// 7. 프로퍼티 값이 있는지 확인. 없으면 에러 처리
-			JSONObject propertiesJsonObject = (JSONObject) jsonObject.get("properties");
-			if(propertiesJsonObject == null) {
-				throw new Error("[Naver] User info api error.[error_code: " + (String)jsonObject.get("error_code") + ", message: " + (String)jsonObject.get("message"));
+			// 7. resultcode 확인
+			String resultCode = (String)resultJsonObject.get("resultcode");
+			String message = (String)resultJsonObject.get("message");
+			if(!resultCode.equals("00")) {
+				throw new Error("[Naver] User info api resultcode error.[resultcode: " + resultCode + " / msg: " + message + "]");
+			}
+			
+			// 8. response 결과
+			JSONObject response = (JSONObject) resultJsonObject.get("response");
+			if(response == null) {
+				throw new Error("[Naver] User info api error.");
 			}
 			
 			// 8. 사용자 정보 map에 저장
-//			Map<String, Object> userData = new HashMap<String, Object>();
-//			userData.put("userid", (String)propertiesJsonObject.get("nickname")); 
-//			userData.put("id", (long)propertiesJsonObject.get("thumbnail_image"));
-//			userData.put("nickname", (String)propertiesJsonObject.get("profile_image"));
 			UserVo user = new UserVo();
-			user.setId(String.valueOf((long)jsonObject.get("id")));
-			user.setName((String)propertiesJsonObject.get("nickname"));
-			user.setProfileImage((String)propertiesJsonObject.get("profile_image"));
+			user.setId((String)response.get("id"));
+			user.setName((String)response.get("name"));
+			user.setProfileImage((String)response.get("profile_image"));
 			return user;
 		} catch (ParseException e) {
 			throw new Error(e.getMessage());

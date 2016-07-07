@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import test.mvc.spring.common.code.CommonCode;
 import test.mvc.spring.common.handler.SessionHandler;
 import test.mvc.spring.vo.UserVo;
 
@@ -35,7 +36,7 @@ public class SocialNetworkServiceDaum extends AbstractSocialNetworkService {
 	}
 	
 	public String createOAuthAuthorizationURL(HttpServletRequest request, String redirectUri, String state) {
-		SessionHandler.setStringInfo(request, SessionHandler.STATE, state);
+		SessionHandler.setStringInfo(request, CommonCode.SessionType.STATE.code, state);
 		return DAUM_HOST + "/oauth2/authorize?client_id=" + DAUM_CLIENT_KEY + "&redirect_uri=" + redirectUri + DAUM_CLIENT_CALLBACK + "&response_type=code";
 	}
 	

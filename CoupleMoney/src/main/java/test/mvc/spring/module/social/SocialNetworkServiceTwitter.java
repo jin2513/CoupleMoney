@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import test.mvc.spring.common.code.CommonCode;
 import test.mvc.spring.common.handler.SessionHandler;
 import test.mvc.spring.vo.UserVo;
 import twitter4j.Twitter;
@@ -71,7 +72,7 @@ public class SocialNetworkServiceTwitter extends AbstractSocialNetworkService {
 	}
 	
 	public String createOAuthAuthorizationURL(HttpServletRequest request, String redirectUri, String state) {
-		SessionHandler.setStringInfo(request, SessionHandler.STATE, state);
+		SessionHandler.setStringInfo(request, CommonCode.SessionType.STATE.code, state);
 		setRequestTokenSession(request);
 		return requestToken.getAuthorizationURL();
 	}

@@ -31,6 +31,7 @@ public class SocialServiceImpl implements SocialService {
 		// 2. uri와 state 생성
 		String redirectUri = request.getRequestURL().toString().replaceAll(request.getRequestURI(), "") + request.getContextPath();
 		String state = sns.generateStateToken(socialType);
+		logger.info("state : " + state);
 		
 		return sns.createOAuthAuthorizationURL(request, redirectUri, state);
 	}
@@ -52,13 +53,13 @@ public class SocialServiceImpl implements SocialService {
 		AbstractSocialNetworkService sns = socialNetworkServiceFactory.create(socialType);
 		
 		// 2. 세션에 담긴 state 값 조회
-		String storedState = SessionHandler.getStringInfo(request, SessionHandler.STATE);
+		String storedState = SessionHandler.getStringInfo(request, CommonCode.SessionType.STATE.code);
 		
 		// 2.1. state 값 인증
 		if(!state.equals("") && !state.equals(storedState)) {
 			throw new Error("Is not equals state value. [state: " + state + ", storedState: " + storedState + "]");
 		} else {
-			SessionHandler.removeSessionInfo(request, SessionHandler.STATE);
+			SessionHandler.removeSessionInfo(request, CommonCode.SessionType.STATE.code);
 		}
 		
 		UserVo userVo = null;

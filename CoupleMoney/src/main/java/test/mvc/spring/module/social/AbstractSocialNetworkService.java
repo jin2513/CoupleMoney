@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import test.mvc.spring.common.code.CommonCode;
 import test.mvc.spring.vo.UserVo;
 
 @SuppressWarnings("deprecation")
@@ -86,7 +88,11 @@ public abstract class AbstractSocialNetworkService {
 	 */
 	public String generateStateToken(String socialType) {
 		SecureRandom random = new SecureRandom();
-		return socialType + ";" + random.nextInt();
+		if(CommonCode.SocialType.NAVER.code.equals(socialType)) {
+			return new BigInteger(130, random).toString(32);
+		} else {
+			return socialType + ";" + random.nextInt();
+		}
 	}
 	
 	/**
@@ -99,18 +105,29 @@ public abstract class AbstractSocialNetworkService {
 		int index = 0;
 		StringBuffer temp = new StringBuffer();
 		
-		for(Entry<String, String> entry : params.entrySet()) {
-			if(index == 0) {
-				temp.append("?" + entry.getKey() + "=" + entry.getValue());
-			} else {
-				temp.append("&" + entry.getKey() + "=" + entry.getValue());
+		if(params != null) {
+			for(Entry<String, String> entry : params.entrySet()) {
+				if(index == 0) {
+					temp.append("?" + entry.getKey() + "=" + entry.getValue());
+				} else {
+					temp.append("&" + entry.getKey() + "=" + entry.getValue());
+				}
+				
+				index++;
 			}
-			
-			index++;
 		}
 		
 		HttpClient httpclient = HttpClientBuilder.create().build();
 		HttpGet get = new HttpGet(url + temp.toString());
+		
+		if(headers != null) {
+			Iterator<String> it = headers.keySet().iterator();
+			while(it.hasNext()){
+				String key = it.next();
+				String val = headers.get(key);
+				get.addHeader(key, val);
+			}
+		}
 		
 		StringBuffer result = new StringBuffer();
 		

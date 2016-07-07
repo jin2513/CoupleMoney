@@ -82,6 +82,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
 		registry
 		.addInterceptor(new LoginInterceptor())
 		.excludePathPatterns("/login/**")
+		.excludePathPatterns("/logout/**")
 		.excludePathPatterns("/social/**");
 	}
 }

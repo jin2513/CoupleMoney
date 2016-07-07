@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class SessionHandler {
-	public static String STATE = "state";
-	
 	private SessionHandler() {
 		
 	}

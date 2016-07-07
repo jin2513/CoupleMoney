@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import test.mvc.spring.common.code.CommonCode;
 import test.mvc.spring.common.handler.SessionHandler;
 import test.mvc.spring.vo.UserVo;
 
@@ -23,7 +24,7 @@ public class SocialNetworkServiceKakao extends AbstractSocialNetworkService {
 	private static final String KAKAO_CLIENT_CALLBACK = "/social/kakao/oauth2.0/callback";
 	
 	public String createOAuthAuthorizationURL(HttpServletRequest request, String redirectUri, String state) {
-		SessionHandler.setStringInfo(request, SessionHandler.STATE, state);
+		SessionHandler.setStringInfo(request, CommonCode.SessionType.STATE.code, state);
 		return KAKAO_AUTH_HOST + "/oauth/authorize?client_id=" + KAKAO_CLIENT_ID + "&response_type=code&redirect_uri=" +redirectUri + KAKAO_CLIENT_CALLBACK +"&state=" + state;
 	}
 

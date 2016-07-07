@@ -16,7 +16,10 @@
 			<h1>Welcome</h1>
 			
 			<form class="form">
-				<img th:src="@{/resources/images/bt_icon.png}" onClick="getAuthorizationUrl('daum')" alt="daum login"/>
+				<img th:src="@{/resources/images/btn_login_daum.png}" onClick="getAuthorizationUrl('daum')" alt="daum login"/>
+				<img th:src="@{/resources/images/btn_login_naver.png}" onClick="getAuthorizationUrl('naver')" alt="naver login"/>
+				<img th:src="@{/resources/images/btn_login_google.png}" onClick="getAuthorizationUrl('google')" alt="google login"/>
+				<img th:src="@{/resources/images/btn_login_twitter.png}" onClick="getAuthorizationUrl('twitter')" alt="twitter login"/>
 				<input type="text" placeholder="Username">
 				<input type="password" placeholder="Password">
 				<button type="submit" id="login-button">Login</button>
@@ -55,6 +58,23 @@
 	});
 		
 	function getAuthorizationUrl(socialType) {
+		switch(socialType) {
+		case "naver":
+			if(document.domain.indexOf("127.0.0.1") > -1) {
+				break;
+			} else {
+				alert("127.0.0.1 만 가능합니다. 도메인을 변경해 주세요.");
+				return;
+			}
+		case "daum":
+			if(document.domain.indexOf("127.0.0.1") > -1 || document.domain.indexOf("localhost") > -1) {
+				break;
+			} else {
+				alert("127.0.0.1 또는 localhost만 가능합니다. 도메인을 변경해 주세요.");
+				return;
+			}
+		}
+		
 		$.ajax({
 			url: "/social/oauth/" + socialType,
 			type: 'GET',

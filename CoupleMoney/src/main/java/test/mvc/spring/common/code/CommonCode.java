@@ -17,7 +17,7 @@ public class CommonCode {
 	}
 	
 	public enum SessionType {
-		USER("user");
+		USER("user"), STATE("state");
 		
 		public String code;
 		

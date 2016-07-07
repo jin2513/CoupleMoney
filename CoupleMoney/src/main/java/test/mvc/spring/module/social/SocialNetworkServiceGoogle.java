@@ -25,6 +25,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
+import test.mvc.spring.common.code.CommonCode;
 import test.mvc.spring.common.handler.SessionHandler;
 import test.mvc.spring.vo.UserVo;
 
@@ -58,7 +59,7 @@ public class SocialNetworkServiceGoogle extends AbstractSocialNetworkService {
 	}
 	
 	public String createOAuthAuthorizationURL(HttpServletRequest request, String redirectUri, String stateToken) {
-		SessionHandler.setStringInfo(request, SessionHandler.STATE, stateToken);
+		SessionHandler.setStringInfo(request, CommonCode.SessionType.STATE.code, stateToken);
 		
 		String callbackUrl = request.getRequestURL().toString().replaceAll(request.getRequestURI(), "") + request.getContextPath() + CALLBACK_URL;
 		

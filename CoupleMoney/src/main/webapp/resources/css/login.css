@@ -99,6 +99,10 @@ form input:focus {
   width: 300px;
   color: #53e3a6;
 }
+form img {
+  width: 45px;
+  height: 45px;
+}
 form button {
   -webkit-appearance: none;
      -moz-appearance: none;
