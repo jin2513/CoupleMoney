@@ -60,7 +60,7 @@ public class SocialNetworkServiceKakao extends AbstractSocialNetworkService {
 		
 		try {
 			// 3. json 형태의 결과값
-			String result = httpPost(url, headers, null);
+			String result = httpGet(url, headers, null);
 			logger.debug(result);
 			
 			// 4. parser 객체 생성
