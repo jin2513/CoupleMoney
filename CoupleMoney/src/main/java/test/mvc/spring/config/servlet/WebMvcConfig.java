@@ -40,6 +40,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
 			String resourceLocations = resourceHandler + "**";
 			registry.addResourceHandler(resourceHandler).addResourceLocations(resourceLocations).setCachePeriod(0);
 		}
+		// swagger 관련 리소스 등록
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 	
 	@Override
@@ -82,8 +85,18 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry
 		.addInterceptor(new LoginInterceptor())
+		// 로그인 관련 제외
 		.excludePathPatterns("/login/**")
 		.excludePathPatterns("/logout/**")
-		.excludePathPatterns("/social/**");
+		.excludePathPatterns("/social/**")
+		
+		// api 관련 제외
+		.excludePathPatterns("/api/**")
+		
+		// swagger 관련 제외
+		.excludePathPatterns("/v2/api-docs")
+		.excludePathPatterns("/configuration/ui")
+		.excludePathPatterns("/swagger-resources")
+		.excludePathPatterns("/configuration/security");
 	}
 }
